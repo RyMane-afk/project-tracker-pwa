@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#071018">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Pulse">
+    <meta name="description" content="Mobile-first project tracker with local project storage.">
+    <title>Pulse Project Tracker</title>
+    <link rel="manifest" href="./manifest.json">
+    <link rel="apple-touch-icon" href="./assets/icon-180.png">
+    <link rel="icon" href="./assets/icon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <div class="app-shell">
+      <div class="phone-status" aria-hidden="true">
+        <span>9:41</span>
+        <div class="status-icons">
+          <span class="signal-bars"><i></i><i></i><i></i><i></i></span>
+          <span class="wifi-mark"></span>
+          <span class="battery-mark"></span>
+        </div>
+      </div>
+      <h1 id="view-title" class="sr-only">Dashboard</h1>
+
+      <main class="content" id="app-content">
+        <section class="view is-active" id="home-view" data-view="home" aria-labelledby="home-title">
+          <div class="home-toolbar" aria-label="Dashboard actions">
+            <button class="top-icon" id="menu-toggle" type="button" aria-label="Open menu" aria-controls="app-menu" aria-expanded="false">
+              <span data-lucide="menu" aria-hidden="true"></span>
+            </button>
+            <div class="home-actions">
+              <button class="top-icon" type="button" aria-label="Search">
+                <span data-lucide="search" aria-hidden="true"></span>
+              </button>
+              <button class="top-icon has-dot" type="button" aria-label="Notifications">
+                <span data-lucide="bell" aria-hidden="true"></span>
+              </button>
+            </div>
+          </div>
+
+          <section class="welcome-panel">
+            <div class="welcome-copy">
+              <p>Welcome back,</p>
+              <h2 id="home-title">Ryan<span>.</span></h2>
+              <p>Keep building. Stay focused.</p>
+            </div>
+            <div class="avatar-ring" aria-label="Ryan profile">
+              <img src="./assets/reference-avatar.png" alt="">
+            </div>
+          </section>
+
+          <section class="stat-grid" id="dashboard-stats" aria-label="Project statistics"></section>
+
+          <section class="panel-section">
+            <div class="section-heading">
+              <h2>Recent Projects</h2>
+              <button class="text-link" type="button" data-nav-target="projects">
+                View All
+                <span data-lucide="chevron-right" aria-hidden="true"></span>
+              </button>
+            </div>
+            <div class="card-list recent-list" id="home-projects"></div>
+          </section>
+
+          <button class="add-project-card" id="open-project-sheet-home" type="button">
+            <span class="add-ring"><span data-lucide="plus" aria-hidden="true"></span></span>
+            <strong>Add New Project</strong>
+            <span>Start tracking your next big idea.</span>
+          </button>
+        </section>
+
+        <section class="view" id="projects-view" data-view="projects" aria-labelledby="projects-title">
+          <div class="section-heading flush">
+            <h2 id="projects-title">Projects</h2>
+            <button class="pill-button" id="open-project-sheet-inline" type="button">
+              <span data-lucide="plus" aria-hidden="true"></span>
+              Add
+            </button>
+          </div>
+          <div class="segmented" id="project-filters" aria-label="Project status filter">
+            <button class="is-selected" type="button" data-filter="all">All</button>
+            <button type="button" data-filter="active">Progress</button>
+            <button type="button" data-filter="planned">Ideas</button>
+            <button type="button" data-filter="done">Done</button>
+          </div>
+          <div class="card-list" id="project-list"></div>
+        </section>
+
+        <section class="view" id="ideas-view" data-view="ideas" aria-labelledby="ideas-title">
+          <div class="section-heading flush">
+            <h2 id="ideas-title">Ideas</h2>
+          </div>
+          <form class="quick-form" id="idea-form">
+            <label class="sr-only" for="idea-input">Idea</label>
+            <input id="idea-input" name="idea" type="text" autocomplete="off" placeholder="Capture an idea">
+            <button class="icon-action" type="submit" aria-label="Save idea">
+              <span data-lucide="send" aria-hidden="true"></span>
+            </button>
+          </form>
+          <div class="card-list" id="idea-list"></div>
+        </section>
+
+        <section class="view" id="tasks-view" data-view="tasks" aria-labelledby="tasks-title">
+          <div class="section-heading flush">
+            <h2 id="tasks-title">Tasks</h2>
+          </div>
+          <form class="quick-form stacked" id="task-form">
+            <label class="sr-only" for="task-input">Task</label>
+            <input id="task-input" name="task" type="text" autocomplete="off" placeholder="Add a task">
+            <label class="sr-only" for="task-project">Project</label>
+            <select id="task-project" name="project"></select>
+            <button class="icon-action" type="submit" aria-label="Save task">
+              <span data-lucide="plus" aria-hidden="true"></span>
+            </button>
+          </form>
+          <div class="card-list" id="task-list"></div>
+        </section>
+
+        <section class="view" id="stats-view" data-view="stats" aria-labelledby="stats-title">
+          <div class="section-heading flush">
+            <h2 id="stats-title">Stats</h2>
+          </div>
+          <section class="stat-grid tall" id="stats-overview" aria-label="Project overview"></section>
+          <section class="panel-section">
+            <div class="section-heading">
+              <h2>Status mix</h2>
+            </div>
+            <div class="chart-list" id="status-chart"></div>
+          </section>
+          <section class="panel-section">
+            <div class="section-heading">
+              <h2>Category load</h2>
+            </div>
+            <div class="chart-list" id="category-chart"></div>
+          </section>
+        </section>
+      </main>
+
+      <nav class="bottom-nav" aria-label="Primary">
+        <button class="nav-item is-active" type="button" data-view-target="home" aria-current="page">
+          <span data-lucide="home" aria-hidden="true"></span>
+          Home
+        </button>
+        <button class="nav-item" type="button" data-view-target="projects">
+          <span data-lucide="folders" aria-hidden="true"></span>
+          Projects
+        </button>
+        <button class="nav-item" type="button" data-view-target="ideas">
+          <span data-lucide="lightbulb" aria-hidden="true"></span>
+          Ideas
+        </button>
+        <button class="nav-item" type="button" data-view-target="tasks">
+          <span data-lucide="list-checks" aria-hidden="true"></span>
+          Tasks
+        </button>
+        <button class="nav-item" type="button" data-view-target="stats">
+          <span data-lucide="bar-chart-3" aria-hidden="true"></span>
+          Stats
+        </button>
+      </nav>
+    </div>
+
+    <div class="menu-backdrop" id="menu-backdrop" hidden></div>
+    <aside class="app-menu" id="app-menu" aria-labelledby="menu-title" aria-modal="true" role="dialog" hidden>
+      <div class="menu-head">
+        <div>
+          <p>Project Tracker</p>
+          <h2 id="menu-title">Menu</h2>
+        </div>
+        <button class="icon-action ghost" id="close-menu" type="button" aria-label="Close menu">
+          <span data-lucide="x" aria-hidden="true"></span>
+        </button>
+      </div>
+      <div class="menu-summary" id="menu-summary" aria-label="Current saved totals"></div>
+      <div class="menu-list" aria-label="Menu actions">
+        <button type="button" data-menu-nav="home">
+          <span data-lucide="home" aria-hidden="true"></span>
+          Dashboard
+        </button>
+        <button type="button" data-menu-nav="projects">
+          <span data-lucide="folders" aria-hidden="true"></span>
+          All Projects
+        </button>
+        <button type="button" data-menu-filter="active">
+          <span data-lucide="circle-dashed" aria-hidden="true"></span>
+          In Progress
+        </button>
+        <button type="button" data-menu-filter="done">
+          <span data-lucide="check-circle-2" aria-hidden="true"></span>
+          Completed
+        </button>
+        <button type="button" data-menu-nav="ideas">
+          <span data-lucide="lightbulb" aria-hidden="true"></span>
+          Ideas
+        </button>
+        <button type="button" data-menu-action="add-project">
+          <span data-lucide="plus" aria-hidden="true"></span>
+          Add Project
+        </button>
+        <button type="button" data-menu-action="export">
+          <span data-lucide="download" aria-hidden="true"></span>
+          Export Data
+        </button>
+      </div>
+    </aside>
+
+    <div class="sheet-backdrop" id="sheet-backdrop" hidden></div>
+    <section class="project-sheet" id="project-sheet" aria-labelledby="sheet-title" aria-modal="true" role="dialog" hidden>
+      <div class="sheet-handle" aria-hidden="true"></div>
+      <div class="sheet-head">
+        <h2 id="sheet-title">New project</h2>
+        <button class="icon-action ghost" id="close-project-sheet" type="button" aria-label="Close">
+          <span data-lucide="x" aria-hidden="true"></span>
+        </button>
+      </div>
+      <form class="project-form" id="project-form">
+        <input type="hidden" id="project-id" name="id">
+        <div class="field">
+          <label for="project-name">Name</label>
+          <input id="project-name" name="name" type="text" autocomplete="off" required maxlength="72" placeholder="Launch microsite">
+        </div>
+        <div class="form-grid">
+          <div class="field">
+            <label for="project-category">Category</label>
+            <select id="project-category" name="category">
+              <option>Minecraft</option>
+              <option>F1</option>
+              <option>Website</option>
+              <option>Game</option>
+              <option>Plugin</option>
+              <option>App</option>
+              <option>Personal</option>
+              <option>Unity</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="project-status">Status</label>
+            <select id="project-status" name="status">
+              <option value="planned">Idea</option>
+              <option value="active">In Progress</option>
+              <option value="paused">Paused</option>
+              <option value="done">Completed</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <div class="range-label">
+            <label for="project-progress">Progress</label>
+            <output id="project-progress-output" for="project-progress">35%</output>
+          </div>
+          <input id="project-progress" name="progress" type="range" min="0" max="100" step="5" value="35">
+        </div>
+        <div class="field">
+          <label for="project-notes">Notes</label>
+          <textarea id="project-notes" name="notes" rows="4" maxlength="220" placeholder="Next checkpoint, blockers, or context"></textarea>
+        </div>
+        <div class="sheet-actions">
+          <button class="secondary-button" id="delete-project" type="button" hidden>
+            <span data-lucide="trash-2" aria-hidden="true"></span>
+            Delete
+          </button>
+          <button class="primary-button" type="submit">
+            <span data-lucide="save" aria-hidden="true"></span>
+            Save project
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <noscript>
+      <p class="noscript">Enable JavaScript to use Pulse Project Tracker.</p>
+    </noscript>
+    <script src="./app.js" defer></script>
+  </body>
+</html>
